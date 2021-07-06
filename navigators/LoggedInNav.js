@@ -1,74 +1,51 @@
 import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import TabsNav from "./TabsNav";
+import UploadNav from "./UploadNav";
+import UploadForm from "../screens/UploadForm";
 import { Ionicons } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Feed from "../screens/Feed";
-import Search from "../screens/Search";
-import Notifications from "../screens/Notifications";
-import Profile from "../screens/Profile";
-import TabIcon from "../components/nav/TabIcon";
-import { View } from "react-native";
+import MessagesNav from "./MessagesNav";
 
-const Tabs = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export default function LoggedInNav() {
   return (
-    <Tabs.Navigator
-      tabBarOptions={{
-        activeTintColor: "white",
-        showLabel: false,
-        style: {
-          borderTopColor: "rgba(255, 255, 255, 0.3)",
-          backgroundColor: "black",
-        },
-      }}
-    >
-      <Tabs.Screen
-        options={{
-          tabBarIcon: ({ color, focused, size }) => (
-            <TabIcon iconName={"home"} color={color} focused={focused} />
-          ),
-        }}
-        name="Feed"
-        component={Feed}
+    <Stack.Navigator mode="modal">
+      <Stack.Screen
+        name="Tabs"
+        component={TabsNav}
+        options={{ headerShown: false }}
       />
-      <Tabs.Screen
-        options={{
-          tabBarIcon: ({ color, focused, size }) => (
-            <TabIcon iconName={"search"} color={color} focused={focused} />
-          ),
-        }}
-        name="Search"
-        component={Search}
+      <Stack.Screen
+        name="Upload"
+        component={UploadNav}
+        options={{ headerShown: false }}
       />
-
-      <Tabs.Screen
-        name={"Camera"}
-        component={View}
+      <Stack.Screen
+        name="UploadForm"
+        component={UploadForm}
         options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <TabIcon iconName={"camera"} color={color} focused={focused} />
+          headerBackImage: ({ tintColor }) => (
+            <Ionicons
+              name="close"
+              color={tintColor}
+              size={28}
+              style={{ marginLeft: 10 }}
+            />
           ),
+          headerBackTitleVisible: false,
+          title: "Upload",
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "black",
+          },
         }}
       />
-
-      <Tabs.Screen
-        options={{
-          tabBarIcon: ({ color, focused, size }) => (
-            <TabIcon iconName={"heart"} color={color} focused={focused} />
-          ),
-        }}
-        name="Notifications"
-        component={Notifications}
+      <Stack.Screen
+        name="Messages"
+        component={MessagesNav}
+        options={{ headerShown: false }}
       />
-      <Tabs.Screen
-        options={{
-          tabBarIcon: ({ color, focused, size }) => (
-            <TabIcon iconName={"person"} color={color} focused={focused} />
-          ),
-        }}
-        name="Profile"
-        component={Profile}
-      />
-    </Tabs.Navigator>
+    </Stack.Navigator>
   );
 }

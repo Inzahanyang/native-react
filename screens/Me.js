@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-
-export default function Notifications({ navigation }) {
+import { logUserOut } from "../apollo";
+import useMe from "../hooks/useMe";
+export default function Me({ navigation }) {
+  const { data } = useMe();
+  useEffect(() => {
+    navigation.setOptions({
+      title: data?.me?.username,
+    });
+  }, [data]);
   return (
     <View
       style={{
@@ -11,13 +18,13 @@ export default function Notifications({ navigation }) {
         justifyContent: "center",
       }}
     >
-      <TouchableOpacity onPress={() => navigation.navigate("Photo")}>
+      <TouchableOpacity onPress={() => logUserOut()}>
         <Text
           style={{
             color: "white",
           }}
         >
-          Notifications
+          Me
         </Text>
       </TouchableOpacity>
     </View>

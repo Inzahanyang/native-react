@@ -1,14 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View, Text } from "react-native";
 
-export default function Profile({ navigation, route }) {
-  useEffect(() => {
-    if (route?.params?.username) {
-      navigation.setOptions({
-        title: route.params.username.toUpperCase(),
-      });
-    }
-  }, []);
+export default function Comments() {
   return (
     <View
       style={{
@@ -23,7 +16,7 @@ export default function Profile({ navigation, route }) {
           color: "white",
         }}
       >
-        someone's profile
+        Comments
       </Text>
     </View>
   );

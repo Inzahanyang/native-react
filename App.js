@@ -1,14 +1,15 @@
+import AppLoading from "expo-app-loading";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import LoggedOutNav from "./navigators/LoggedOutNav";
-import LoggedInNav from "./navigators/LoggedInNav";
 import { NavigationContainer } from "@react-navigation/native";
 import { ApolloProvider, useReactiveVar } from "@apollo/client";
-import client, { isLoggedInVar, tokenVar } from "./apollo";
+import client, { isLoggedInVar, tokenVar, cache } from "./apollo";
+import LoggedInNav from "./navigators/LoggedInNav";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorageWrapper, persistCache } from "apollo3-cache-persist";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -23,23 +24,22 @@ export default function App() {
   };
   const preload = async () => {
     const token = await AsyncStorage.getItem("token");
-
     if (token) {
       isLoggedInVar(true);
       tokenVar(token);
     }
+
     return preloadAssets();
   };
   if (loading) {
     return (
       <AppLoading
         startAsync={preload}
-        onFinish={onFinish}
         onError={console.warn}
+        onFinish={onFinish}
       />
     );
   }
-
   return (
     <ApolloProvider client={client}>
       <NavigationContainer>
